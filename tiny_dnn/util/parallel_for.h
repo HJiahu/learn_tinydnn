@@ -35,6 +35,7 @@
 #include "aligned_allocator.h"
 #include "nn_error.h"
 #include "tiny_dnn/config.h"
+#include <thread>
 
 #ifdef CNN_USE_TBB
 #ifndef NOMINMAX
