@@ -95,7 +95,7 @@ static void train_lenet(const std::string& data_dir_path) {
     progress_display disp(static_cast<unsigned long>(train_images.size()));
     timer t;
     int minibatch_size = 10;
-    int num_epochs = 3;
+    int num_epochs = 30;
 
     optimizer.alpha *= static_cast<tiny_dnn::float_t>(std::sqrt(minibatch_size));
 
@@ -123,7 +123,7 @@ static void train_lenet(const std::string& data_dir_path) {
     nn.test(test_images, test_labels).print_detail(std::cout);
 
     // save network model & trained weights
-    nn.save("LeNet.dnnmodel");
+    nn.save("LeNet", content_type::weights_and_model, file_format::json);
 }
 
 int main(int argc, char **argv) {

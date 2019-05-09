@@ -55,7 +55,7 @@ void convert_image(const std::string& imagefilename,
 void recognize(const std::string& dictionary, const std::string& filename) {
     network<sequential> nn;
 
-    nn.load(dictionary);
+    nn.load(dictionary, content_type::weights_and_model, file_format::json);
 
     // convert imagefile to vec_t
     vec_t data;
@@ -93,5 +93,5 @@ int main(int argc, char** argv) {
         cout << "please specify image file";
         return 0;
     }
-    recognize("LeNet-model", argv[1]);
+    recognize("tiny_mnist/LeNet.json", argv[1]);
 }

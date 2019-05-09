@@ -52,7 +52,7 @@
  * define to use exceptions
  */
 #define CNN_USE_EXCEPTIONS
-// #define CNN_SINGLE_THREAD
+//#define CNN_SINGLE_THREAD
 
 /**
  * comment out if you want tiny-dnn to be quiet 
