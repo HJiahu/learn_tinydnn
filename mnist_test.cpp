@@ -78,13 +78,13 @@ void recognize(const std::string& dictionary, const std::string& filename) {
     for (size_t i = 0; i < nn.depth(); i++) {
         auto out_img = nn[i]->output_to_image();
         auto filename = "layer_" + std::to_string(i) + ".png";
-        out_img.save(filename);
+        out_img.save(std::string("./tmp/") + filename);
     }
     // save filter shape of first convolutional layer
     {
         auto weight = nn.at<convolutional_layer<tan_h>>(0).weight_to_image();
         auto filename = "weights.png";
-        weight.save(filename);
+        weight.save(std::string("./tmp/") + filename);
     }
 }
 

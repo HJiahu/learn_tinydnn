@@ -26,6 +26,8 @@
 */
 #include <iostream>
 #include "tiny_dnn/tiny_dnn.h"
+#include "third_party/cpptoml.h"
+#include <atomic>
 
 using namespace tiny_dnn;
 using namespace tiny_dnn::activation;
@@ -81,9 +83,9 @@ static void train_lenet(const std::string& data_dir_path) {
     std::vector<label_t> train_labels, test_labels;
     std::vector<vec_t> train_images, test_images;
 
-    parse_mnist_labels(data_dir_path + "/t10k-labels.idx1-ubyte",
+    parse_mnist_labels(data_dir_path + "/train-labels.idx1-ubyte",
                        &train_labels);
-    parse_mnist_images(data_dir_path + "/t10k-images.idx3-ubyte",
+    parse_mnist_images(data_dir_path + "/train-images.idx3-ubyte",
                        &train_images, -1.0, 1.0, 2, 2);
     parse_mnist_labels(data_dir_path + "/t10k-labels.idx1-ubyte",
                        &test_labels);
@@ -94,14 +96,21 @@ static void train_lenet(const std::string& data_dir_path) {
 
     progress_display disp(static_cast<unsigned long>(train_images.size()));
     timer t;
-    int minibatch_size = 10;
-    int num_epochs = 30;
+    auto config = cpptoml::parse_file("configs.toml");
+    int minibatch_size = *config->get_qualified_as<int>("train-mnist.batchsize");
+    int num_epochs     = *config->get_qualified_as<int>("train-mnist.epochs");
+
+    std::cout<<"mini batchsize: "<< minibatch_size << std::endl;
+    std::cout<<"epochs: " << num_epochs << std::endl;
 
     optimizer.alpha *= static_cast<tiny_dnn::float_t>(std::sqrt(minibatch_size));
 
     // create callback
+    std::atomic_int train_cnt(0);
+    std::atomic_int total_seconds(0);
     auto on_enumerate_epoch = [&](){
-        std::cout << t.elapsed() << "s elapsed." << std::endl;
+        total_seconds += t.elapsed();
+        std::cout << t.elapsed() << "s elapsed. epoch: " << ++train_cnt << "total seconds: " << total_seconds << std::endl;
         tiny_dnn::result res = nn.test(test_images, test_labels);
         std::cout << res.num_success << "/" << res.num_total << std::endl;
 
@@ -123,7 +132,7 @@ static void train_lenet(const std::string& data_dir_path) {
     nn.test(test_images, test_labels).print_detail(std::cout);
 
     // save network model & trained weights
-    nn.save("LeNet", content_type::weights_and_model, file_format::json);
+    nn.save("tiny_mnist/LeNet.json", content_type::weights_and_model, file_format::json);
 }
 
 int main(int argc, char **argv) {

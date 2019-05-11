@@ -27,11 +27,12 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
-
 /**
  * define if you want to use intel TBB library
+ * TBB  single thread 二选一
  */
-//#define CNN_USE_TBB
+#define CNN_USE_TBB
+// #define CNN_SINGLE_THREAD
 
 /**
  * define to enable avx vectorization
@@ -52,7 +53,6 @@
  * define to use exceptions
  */
 #define CNN_USE_EXCEPTIONS
-//#define CNN_SINGLE_THREAD
 
 /**
  * comment out if you want tiny-dnn to be quiet 

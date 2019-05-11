@@ -33,4 +33,7 @@
 
 # others
 .vscode/
+Debug/
+Release/
+tmp/
 *.dnnmodel

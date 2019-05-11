@@ -1,0 +1,3 @@
+[train-mnist]
+batchsize = 10
+epochs = 30
