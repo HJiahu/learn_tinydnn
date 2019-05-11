@@ -1,16 +1,17 @@
 ### ENV
 #### Compiler
-windows 10, MINGW64[[DOWNLOAD][1]]
+Windows & MinGW64[[DOWNLOAD][1]]
 
 #### TBB
-use MinGW64 compile [[TBB][2]], copy dlls to current dir and ./libs   
+use MinGW64 compile [[TBB][2]]:   
+CMD: `make -j5 tbb tbbmalloc stdver=c++14 compiler=gcc runtime=mingw`
 
-change dll files name in ./libs,  tbb.dll->libtbb.a, tbbmalloc.dll->libtbbmalloc.a, tbbmalloc_proxy.dll->libtbbmalloc_proxy.a    
+copy dlls to current dir and ./libs   
 
-if you do not want to use TBB, delete CNN_USE_TBB in config.h and use CNN_SINGLE_THREAD
+change name of dlls in ./libs, like this tbb.dll->libtbb.a, tbbmalloc.dll->libtbbmalloc.a, tbbmalloc_proxy.dll->libtbbmalloc_proxy.a    
 
-### CMDs
-* MinGW64&TBB：`make -j5 tbb tbbmalloc stdver=c++14 compiler=gcc runtime=mingw`
+if you do not want to use TBB, use CNN_SINGLE_THREAD instead of CNN_USE_TBB in tiny_dnn/config.h and delete TBB_LNK in Makefile
+
 
 
 
